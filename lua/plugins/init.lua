@@ -28,7 +28,9 @@ return {
         "typescript-language-server",
         "clangd",
         "clang-format",
-        "rust-analyzer"
+        "rust-analyzer",
+        -- "python-lsp-server"
+        "pyright"
       },
     },
   },
@@ -42,7 +44,8 @@ return {
         "javascript", "typescript", "tsx",
         "c",
         "markdown", "markdown_inline",
-        "rust"
+        "rust",
+        "python"
       },
     },
   },
