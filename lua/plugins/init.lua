@@ -3,6 +3,9 @@ return {
     "stevearc/conform.nvim",
     -- event = 'BufWritePre', -- uncomment for format on save
     opts = require "configs.conform",
+    config = function()
+      require "configs.conform"
+    end,
   },
 
   {
@@ -82,8 +85,6 @@ return {
   --       "rust"
   --     },
   --   },
-  -- },
-
 
 --   {
 --     'nvim-telescope/telescope.nvim', tag = '0.1.8',
