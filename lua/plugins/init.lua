@@ -26,7 +26,7 @@ return {
         "typescript-language-server",
         "clangd",
         "clang-format",
-        "rust-analyzer",
+        -- "rust-analyzer",
         -- "python-lsp-server"
         "pyright"
       },
