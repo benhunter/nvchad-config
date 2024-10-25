@@ -47,4 +47,30 @@ return {
       },
     },
   },
+
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("copilot").setup({})
+  --   end,
+  -- }
+
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = { "Copilot" },
+    event = { "InsertEnter" },
+    opts = {
+      suggestion = {
+        auto_trigger = true,
+      }
+    },
+    config = function ()
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end,
+  },
 }
