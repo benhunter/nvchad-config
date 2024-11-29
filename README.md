@@ -6,6 +6,16 @@ Starter config for NvChad
 
 On `nixos` branch.
 
+## Troubleshooting
+
+## Reset cache for clean start
+
+```
+rm -rf ~/.config/nvim
+rm -rf ~/.local/share/nvim
+rm -rf ~/.cache/nvim
+```
+
 # Original README
 
 **This repo is supposed to used as config by NvChad users!**
