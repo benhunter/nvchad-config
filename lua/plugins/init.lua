@@ -50,16 +50,22 @@ return {
     "zbirenbaum/copilot.lua",
     cmd = { "Copilot" },
     event = { "InsertEnter" },
-    opts = {
-      suggestion = {
-        auto_trigger = true,
-      }
-    },
     config = function ()
       require("copilot").setup({
-        -- suggestion = { enabled = false },
-        -- panel = { enabled = false },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          hide_during_completion = true,
+        },
+        panel = {
+          enabled = true,
+          auto_refresh = false,
+          keymap = {
+            open = "<M-p>"
+          },
+        },
       })
+      print("Copilot setup loaded")
     end,
   },
 }
