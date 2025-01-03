@@ -5,12 +5,48 @@ return {
     opts = require "configs.conform",
   },
 
-  -- These are some examples, uncomment them if you want to see them work!
   {
     "neovim/nvim-lspconfig",
     config = function()
       require "configs.lspconfig"
     end,
+  },
+
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = { "Copilot" },
+    event = { "InsertEnter" },
+    config = function ()
+      require("copilot").setup({
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          hide_during_completion = true,
+          keymap = {
+            -- accept = "<M-p>",
+         },
+        },
+        panel = {
+          enabled = true,
+          auto_refresh = false,
+          keymap = {
+            open = "<M-p>"
+          },
+        },
+      })
+      print("Copilot setup loaded")
+    end,
+  },
+
+  {
+    -- install with yarn or npm
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && yarn install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
   },
 
   -- {
@@ -46,39 +82,6 @@ return {
   --   },
   -- },
 
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = { "Copilot" },
-    event = { "InsertEnter" },
-    config = function ()
-      require("copilot").setup({
-        suggestion = {
-          enabled = true,
-          auto_trigger = true,
-          hide_during_completion = true,
-        },
-        panel = {
-          enabled = true,
-          auto_refresh = false,
-          keymap = {
-            open = "<M-p>"
-          },
-        },
-      })
-      print("Copilot setup loaded")
-    end,
-  },
-
-  {
-    -- install with yarn or npm
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    build = "cd app && yarn install",
-    init = function()
-      vim.g.mkdp_filetypes = { "markdown" }
-    end,
-    ft = { "markdown" },
-  },
 
 --   {
 --     'nvim-telescope/telescope.nvim', tag = '0.1.8',
