@@ -6,6 +6,10 @@ Starter config for NvChad
 
 On `nixos` branch.
 
+## nix develop
+
+Best with `direnv` from https://github.com/nix-community/nix-direnv. See `.envrc`.
+
 ## Troubleshooting
 
 ## Reset cache for clean start
