@@ -2,7 +2,7 @@
 
 Starter config for NvChad
 
-## Nixos
+# Nixos
 
 On `nixos` branch.
 
@@ -10,7 +10,13 @@ On `nixos` branch.
 
 Best with `direnv` from https://github.com/nix-community/nix-direnv. See `.envrc`.
 
-## Troubleshooting
+## Update lazy lock file
+
+```
+cp ~/.config/nvim-dev/nvim/lazy-lock.json .
+```
+
+# Troubleshooting
 
 ## Reset cache for clean start
 
