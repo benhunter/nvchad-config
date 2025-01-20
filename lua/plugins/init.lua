@@ -13,7 +13,7 @@ return {
       require "configs.lspconfig"
     end,
   },
-  --
+
   {
     "williamboman/mason.nvim",
     opts = {
@@ -73,4 +73,9 @@ return {
       })
     end,
   },
+
+  -- {
+  --   "treesitter-context",
+  --
+  -- },
 }

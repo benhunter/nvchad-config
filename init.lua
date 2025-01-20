@@ -1,3 +1,13 @@
+--- Ensure that the config's lua directory is in the module search path
+--local config = vim.fn.stdpath("config")
+--package.path = config .. "/lua/?.lua;" .. config .. "/lua/?/init.lua; /lua/plugins/init.lua;" .. package.path
+
+-- print("init.lua: DEBUG")
+
+-- Diagnostic: print the package.path (you can remove this after debugging)
+--print("lua package.path: ", package.path)
+---
+
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/nvchad/base46/"
 vim.g.mapleader = " "
 
@@ -12,6 +22,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local lazy_config = require "configs.lazy"
+
+-- print("init.lua: before lazy + NvChad")
 
 -- load plugins
 require("lazy").setup({
@@ -29,9 +41,12 @@ require("lazy").setup({
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
 
+-- print("init.lua: before options")
+
 require "options"
 require "nvchad.autocmds"
 
 vim.schedule(function()
   require "mappings"
 end)
+
