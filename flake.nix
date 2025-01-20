@@ -1,3 +1,70 @@
+{
+  description = "Neovim development environment. Working, loads ./init.lua, but not plugins.";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+
+    # flake-utils helps us build for multiple systems.
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+
+        # Override Neovim to refer to our repository's init.lua.
+        neovimCustom = pkgs.neovim.override {
+          configure = {
+            initVimPath = ./init.lua;
+          };
+        };
+
+        # Wrap nvim so it uses a writable copy of the configuration.
+        wrappedNvim = pkgs.writeShellScriptBin "nvim" ''
+          #!/bin/sh
+          # Define a writable configuration directory. We will use this as our full config folder.
+          NVIM_WRITABLE_CONFIG="$HOME/.config/nvim-dev"
+
+          # If the writable copy does not already exist, create it by copying the repository.
+          if [ -d "$NVIM_WRITABLE_CONFIG" ]; then
+            rm -rf ~/.config/nvim-dev
+          fi
+
+          echo "Creating a writable copy of the configuration at $NVIM_WRITABLE_CONFIG/nvim"
+	        mkdir -p $NVIM_WRITABLE_CONFIG
+          echo "Copying from $PWD to $NVIM_WRITABLE_CONFIG/nvim"
+          cp -r "$PWD" "$NVIM_WRITABLE_CONFIG/nvim"
+
+          # Set XDG variables so that Neovim uses the writable directory for all its configuration.
+          export XDG_CONFIG_HOME="$NVIM_WRITABLE_CONFIG"
+          export XDG_DATA_HOME="$HOME/.local/share"
+          export XDG_CACHE_HOME="$HOME/.cache"
+
+          # Launch Neovim using the configuration from the writable copy.
+          exec ${neovimCustom}/bin/nvim \
+            -u "$NVIM_WRITABLE_CONFIG/nvim/init.lua" \
+            --cmd "set runtimepath^=$NVIM_WRITABLE_CONFIG" \
+            "$@"
+        '';
+            # --cmd "lua package.path = '$NVIM_WRITABLE_CONFIG/lua/?.lua;$NVIM_WRITABLE_CONFIG/lua/?/init.lua;$NVIM_WRITABLE_CONFIG/lua/plugins/init.lua;' .. package.path" \
+      in {
+        devShells.default = pkgs.mkShell {
+          buildInputs = [ wrappedNvim ];
+
+          shellHook = ''
+            echo "NVIM_WRITABLE_CONFIG=$NVIM_WRITABLE_CONFIG"
+            echo "Custom wrapped nvim is available."
+            echo "Using the writable configuration at $HOME/.config/nvim-dev"
+          '';
+        };
+
+        packages.neovim = neovimCustom;
+      }
+    );
+}
+
 #---
 # Does not load plugins
 # {
@@ -58,75 +125,6 @@
 #       }
 #     );
 # }
-
-#---
-{
-  description = "Neovim development environment. Working, loads ./init.lua, but not plugins.";
-
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
-
-    # flake-utils helps us build for multiple systems.
-    flake-utils.url = "github:numtide/flake-utils";
-  };
-
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-
-        # Override Neovim to refer to our repository's init.lua.
-        neovimCustom = pkgs.neovim.override {
-          configure = {
-            initVimPath = ./init.lua;
-          };
-        };
-
-        # Wrap nvim so it uses a writable copy of the configuration.
-        wrappedNvim = pkgs.writeShellScriptBin "nvim" ''
-          #!/bin/sh
-          # Define a writable configuration directory. We will use this as our full config folder.
-          NVIM_WRITABLE_CONFIG="$HOME/.config/nvim-dev"
-
-          # If the writable copy does not already exist, create it by copying the repository.
-          if [ -d "$NVIM_WRITABLE_CONFIG" ]; then
-            rm -rf ~/.config/nvim-dev
-          fi
-
-          echo "Creating a writable copy of the configuration at $NVIM_WRITABLE_CONFIG/nvim"
-	        mkdir -p $NVIM_WRITABLE_CONFIG
-          echo "Copying from $PWD to $NVIM_WRITABLE_CONFIG/nvim"
-          cp -r "$PWD" "$NVIM_WRITABLE_CONFIG/nvim"
-
-          # Set XDG variables so that Neovim uses the writable directory for all its configuration.
-          export XDG_CONFIG_HOME="$NVIM_WRITABLE_CONFIG"
-          export XDG_DATA_HOME="$HOME/.local/share"
-          export XDG_CACHE_HOME="$HOME/.cache"
-
-          # Launch Neovim using the configuration from the writable copy.
-          exec ${neovimCustom}/bin/nvim \
-            -u "$NVIM_WRITABLE_CONFIG/nvim/init.lua" \
-            --cmd "set runtimepath^=$NVIM_WRITABLE_CONFIG" \
-            # --cmd "lua package.path = '$NVIM_WRITABLE_CONFIG/lua/?.lua;$NVIM_WRITABLE_CONFIG/lua/?/init.lua;$NVIM_WRITABLE_CONFIG/lua/plugins/init.lua;' .. package.path" \
-            "$@"
-        '';
-        #--cmd "print('Current package.path:', package.path)"
-      in {
-        devShells.default = pkgs.mkShell {
-          buildInputs = [ wrappedNvim ];
-
-          shellHook = ''
-            echo "NVIM_WRITABLE_CONFIG=$NVIM_WRITABLE_CONFIG"
-            echo "Custom wrapped nvim is available."
-            echo "Using the writable configuration at $HOME/.config/nvim-dev"
-          '';
-        };
-
-        packages.neovim = neovimCustom;
-      }
-    );
-}
 
 #---
 # {
