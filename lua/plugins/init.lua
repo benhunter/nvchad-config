@@ -52,6 +52,20 @@ return {
     ft = { "markdown" },
   },
 
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "vim", "lua", "vimdoc",
+        "html", "css",
+        "javascript", "typescript", "tsx",
+        "c",
+        "markdown", "markdown_inline",
+        "rust"
+      },
+    },
+  },
+
   { import = "nvchad.blink.lazyspec" },
 
   -- {
@@ -72,19 +86,6 @@ return {
   --     },
   --   },
   -- },
-
-  -- {
-  --   "nvim-treesitter/nvim-treesitter",
-  --   opts = {
-  --     ensure_installed = {
-  --       "vim", "lua", "vimdoc",
-  --       "html", "css",
-  --       "javascript", "typescript", "tsx",
-  --       "c",
-  --       "markdown", "markdown_inline",
-  --       "rust"
-  --     },
-  --   },
 
 --   {
 --     'nvim-telescope/telescope.nvim', tag = '0.1.8',
