@@ -11,16 +11,9 @@ local servers = {
   "ts_ls"
 }
 
-local nvlsp = require "nvchad.configs.lspconfig"
+vim.lsp.enable(servers)
 
--- lsps with default config
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = nvlsp.on_attach,
-    on_init = nvlsp.on_init,
-    capabilities = nvlsp.capabilities,
-  }
-end
+local nvlsp = require "nvchad.configs.lspconfig"
 
 -- configuring single server, example: typescript
 -- lspconfig.ts_ls.setup {
@@ -36,6 +29,5 @@ lspconfig.pyright.setup({
   filetypes = {"python"},
 })
 
-vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers 
