@@ -49,6 +49,8 @@ return {
     ft = { "markdown" },
   },
 
+  { import = "nvchad.blink.lazyspec" },
+
   -- {
   --   "williamboman/mason.nvim",
   --   opts = {
