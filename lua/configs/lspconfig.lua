@@ -1,7 +1,5 @@
 require("nvchad.configs.lspconfig").defaults()
 
-local lspconfig = require "lspconfig"
-
 local servers = {
   "html",
   "cssls",
@@ -13,6 +11,7 @@ local servers = {
 
 vim.lsp.enable(servers)
 
+local lspconfig = require "lspconfig"
 local nvlsp = require "nvchad.configs.lspconfig"
 
 -- configuring single server, example: typescript
