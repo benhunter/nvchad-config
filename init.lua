@@ -36,4 +36,4 @@ vim.schedule(function()
   require "mappings"
 end)
 
-require("nvchad.mason").install_all()
+-- require("nvchad.mason").install_all()
