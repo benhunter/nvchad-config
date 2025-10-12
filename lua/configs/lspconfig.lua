@@ -6,26 +6,20 @@ local servers = {
   "rust_analyzer",
   "clangd",
   "lua_ls",
-  "ts_ls"
+  "ts_ls",
+  "bashls",
+  "pyright"
 }
 
 vim.lsp.enable(servers)
 
-local lspconfig = require "lspconfig"
-local nvlsp = require "nvchad.configs.lspconfig"
-
--- configuring single server, example: typescript
--- lspconfig.ts_ls.setup {
+-- Config a single LSP
+-- read :h vim.lsp.config for changing options of lsp servers 
+-- local nvlsp = require "nvchad.configs.lspconfig"
+--
+-- vim.lsp.config('pyright', {
 --   on_attach = nvlsp.on_attach,
 --   on_init = nvlsp.on_init,
 --   capabilities = nvlsp.capabilities,
--- }
-
-lspconfig.pyright.setup({
-  on_attach = nvlsp.on_attach,
-  on_init = nvlsp.on_init,
-  capabilities = nvlsp.capabilities,
-  filetypes = {"python"},
-})
-
--- read :h vim.lsp.config for changing options of lsp servers 
+--   filetypes = {"python"},
+-- })
