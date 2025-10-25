@@ -3,6 +3,7 @@ require("nvchad.configs.lspconfig").defaults()
 local servers = {
   "html",
   "cssls",
+  "tailwindcss",
   "rust_analyzer",
   "clangd",
   "lua_ls",
