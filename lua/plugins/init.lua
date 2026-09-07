@@ -15,38 +15,58 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "vim", "lua", "vimdoc",
+    branch = "main",
+    lazy = false,
+
+    -- Replace NvChad's legacy loading/build settings.
+    event = {},
+    cmd = {},
+    build = ":TSUpdate",
+
+    -- Return a fresh table instead of merging legacy options.
+    opts = function()
+      return {}
+    end,
+
+    config = function(_, opts)
+      -- Preserve NvChad's Treesitter highlight groups.
+      pcall(function()
+        dofile(vim.g.base46_cache .. "syntax")
+        dofile(vim.g.base46_cache .. "treesitter")
+      end)
+
+      local ts = require "nvim-treesitter"
+      ts.setup(opts)
+
+      -- Replaces ensure_installed; installation is asynchronous.
+      ts.install {
+        "vim", "lua", "luadoc", "vimdoc",
         "html", "css",
         "javascript", "typescript", "tsx",
         "c",
         "markdown", "markdown_inline",
-        "rust",
-        "python"
-      },
-    },
-    dependencies = {
-      {
-        "nvim-treesitter/nvim-treesitter-context",
-        -- config = function()
-        --   require("treesitter-context").setup{
-        --     enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-        --     multiline_threshold = 20, -- Maximum number of lines to show for a single context
-        --     max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-        --     min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-        --     line_numbers = true,
-        --     trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-        --     mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
-        --     -- Separator between context and content. Should be a single character string, like '-'.
-        --     -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-        --     separator = nil,
-        --     zindex = 20, -- The Z-index of the context window
-        --     on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
-        --   }
-        -- end,
-      },
-    },
+        "rust", "python",
+        "bash",
+      }
+
+      local group = vim.api.nvim_create_augroup(
+        "UserTreesitter",
+        { clear = true }
+      )
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        callback = function(args)
+          -- Skip filetypes without an installed parser.
+          local lang = vim.treesitter.language.get_lang(
+            vim.bo[args.buf].filetype
+          )
+          if lang and pcall(vim.treesitter.language.add, lang) then
+            vim.treesitter.start(args.buf, lang)
+          end
+        end,
+      })
+    end,
   },
 
   -- test new blink

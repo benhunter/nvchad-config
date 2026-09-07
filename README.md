@@ -1,6 +1,13 @@
 # NvChad Config
 
-Starter config for NvChad
+Starter config for NvChad.
+
+## Prerequistites
+
+Treesitter CLI:
+```
+brew install tree-sitter-cli
+```
 
 ## Nixos
 
