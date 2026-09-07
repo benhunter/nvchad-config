@@ -61,8 +61,14 @@ return {
           local lang = vim.treesitter.language.get_lang(
             vim.bo[args.buf].filetype
           )
-          if lang and pcall(vim.treesitter.language.add, lang) then
-            vim.treesitter.start(args.buf, lang)
+          if lang and vim.treesitter.language.add(lang) then
+            local ok, err = pcall(vim.treesitter.start, args.buf, lang)
+            if not ok then
+              vim.notify_once(
+                "Treesitter failed to start for " .. lang .. ": " .. err,
+                vim.log.levels.WARN
+              )
+            end
           end
         end,
       })
