@@ -16,6 +16,11 @@ rm -rf ~/.local/share/nvim
 rm -rf ~/.cache/nvim
 ```
 
+## Lazy
+
+Install location:
+`$HOME/.local/share/nvim/lazy`
+
 # copilot.lua
 
 Default config:
