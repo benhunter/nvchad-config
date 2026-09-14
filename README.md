@@ -9,6 +9,11 @@ Treesitter CLI:
 brew install tree-sitter-cli
 ```
 
+## Updates
+
+- Lazy `:Lazy update`
+- Mason `:MasonUpdate`
+
 ## Nixos
 
 On `nixos` branch.
